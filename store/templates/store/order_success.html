@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Order Success{% endblock %}
+
+{% block content %}
+<h2 class="text-3xl font-bold text-green-600 mb-4">Order Placed Successfully!</h2>
+
+<p class="text-gray-700">Thank you for your order, {{ order.name }}! Your total amount is <strong>Rs {{ order.total_price }}</strong>.</p>
+
+<h3 class="text-xl font-bold text-gray-700 mt-6">Order Details:</h3>
+<ul class="list-disc ml-6">
+    {% for item in ordered_products %}
+    <li>{{ item.name }} - Quantity: {{ item.quantity }} - Price: Rs {{ item.price }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'home' %}" class="mt-6 block text-center bg-green-500 text-white py-2 rounded-md">Back to Home</a>
+{% endblock %}

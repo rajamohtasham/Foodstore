@@ -1,0 +1,24 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold mb-4">Edit Profile</h2>
+
+    <!-- Profile Icon -->
+    <div class="flex justify-center mb-4">
+        <img src="https://www.svgrepo.com/show/382106/profile-circle.svg" class="w-24 h-24 rounded-full" alt="Profile Icon">
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block font-semibold">Phone</label>
+            {{ form.phone }}
+        </div>
+        <div class="mb-4">
+            <label class="block font-semibold">Address</label>
+            {{ form.address }}
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

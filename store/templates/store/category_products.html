@@ -1,0 +1,20 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h2 class="text-3xl font-bold text-gray-700 mb-6">Category Products</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% for product in products %}
+    <div class="bg-white p-4 rounded-lg shadow-md">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-40 object-cover rounded-md">
+        <h3 class="text-lg font-bold mt-2">{{ product.name }}</h3>
+        <p class="text-gray-600">Price: Rs{{ product.price }}</p>
+        <a href="{% url 'product_detail' product.id %}" class="block text-center bg-green-500 text-white py-2 mt-4 rounded-md">View Details</a>
+    </div>
+    {% empty %}
+    <p class="text-gray-500">No products found in this category.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mt-10">
+    <h2 class="text-3xl font-bold text-gray-700 text-center mb-6">Login</h2>
+
+    {% if form.errors %}
+        <p class="text-red-500 text-center">Invalid username or password. Please try again.</p>
+    {% endif %}
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label class="block text-gray-700">Username:</label>
+            {{ form.username }}
+        </div>
+        <div>
+            <label class="block text-gray-700">Password:</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition">
+            Login
+        </button>
+    </form>
+
+    <p class="mt-4 text-center">Don't have an account? 
+        <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register here</a>
+    </p>
+</div>
+{% endblock %}
