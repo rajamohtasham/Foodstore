@@ -1,9 +1,9 @@
 {% extends 'store/base.html' %}
 
-{% block title %}Products{% endblock %}
+{% block title %}{{ category.name }} - Products{% endblock %}
 
 {% block content %}
-<h2 class="text-3xl font-bold text-gray-700 mb-6">Category Products</h2>
+<h2 class="text-3xl font-bold text-gray-700 mb-6">{{ category.name }}</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     {% for product in products %}

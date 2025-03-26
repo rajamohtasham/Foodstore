@@ -16,65 +16,83 @@
 <body class="bg-gray-100">
 
     <!-- Navbar -->
-    <nav class="bg-white bg-opacity-80 backdrop-blur-md  fixed w-full top-0 z-50">
+    <nav class="bg-white bg-opacity-80 backdrop-blur-md fixed w-full top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo -->
             <a href="{% url 'home' %}" class="group">
                 <img src="{% static 'images/logo2.png' %}" alt="YumMart Logo"
-                    class="h-20 w-28 transition-transform duration-500 "
+                    class="h-20 w-28 transition-transform duration-500"
                     style="animation: bounceRotate 2s infinite;">
             </a>
+
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 items-center">
-                <a href="{% url 'home' %}"
-                    class="text-gray-700 font-medium hover:text-green-600 transition duration-300">
+                <a href="{% url 'home' %}" class="text-gray-700 font-medium hover:text-green-600 transition duration-300">
                     Home
                 </a>
-                <a href="#" class="text-gray-700 font-medium hover:text-green-600 transition duration-300">
-                    Categories
-                </a>
-                <a href="{% url 'order_history' %}"
-                    class="text-gray-700 font-medium hover:text-green-600 transition duration-300">
+
+                <!-- Categories Dropdown -->
+                <div class="relative group">
+                    <a href="{% url 'categories' %}" class="text-gray-700 font-medium hover:text-green-600 transition">
+                        Categories
+                    </a>
+                    <div class="absolute left-0 hidden group-hover:block bg-white shadow-md mt-2 w-48 rounded-md z-10">
+                        <ul class="py-2">
+                            {% for category in categories %}
+                                <li>
+                                    <a href="{% url 'category_products' category.slug %}" 
+                                       class="block px-4 py-2 hover:bg-gray-100">
+                                        {{ category.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="{% url 'order_history' %}" class="text-gray-700 font-medium hover:text-green-600 transition duration-300">
                     Order History
                 </a>
-                <a href="{% url 'cart' %}"
-                    class="flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300 text-sm">
+
+                <a href="{% url 'cart' %}" 
+                   class="flex items-center px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300 text-sm">
                     🛒 Cart
                 </a>
-                <a href="{% url 'view_profile' %}"
-                    class="flex items-center text-blue-500 font-medium hover:text-blue-700 transition duration-300 space-x-2 relative group">
+
+                <a href="{% url 'view_profile' %}" 
+                   class="flex items-center text-blue-500 font-medium hover:text-blue-700 transition duration-300 space-x-2 relative group">
                     <i class="ri-map-pin-user-fill text-xl"></i>
-                    <span
-                        class="absolute bottom-[-40px] left-[50px] transform -translate-x-1/2 bg-blue-800 text-white text-xs w-24 font-semibold py-1 px-4 rounded opacity-0 group-hover:opacity-100 transition duration-300 capitalize">
+                    <span class="absolute bottom-[-40px] left-[50px] transform -translate-x-1/2 bg-blue-800 text-white text-xs w-24 font-semibold py-1 px-4 rounded opacity-0 group-hover:opacity-100 transition duration-300 capitalize">
                         View your profile
                     </span>
                 </a>
+
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'logout' %}"
-                    class="text-red-500 font-medium hover:text-red-700 transition duration-300 relative group">
-                    <i class='bx bx-log-out-circle text-2xl'></i>
-                    <span
-                        class="absolute bottom-[-30px] left-[50px] transform -translate-x-1/2 bg-red-500 text-white font-semibold py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition duration-300">
-                        Logout
-                    </span>
-                </a>
+                    <a href="{% url 'logout' %}" 
+                       class="text-red-500 font-medium hover:text-red-700 transition duration-300 relative group">
+                        <i class='bx bx-log-out-circle text-2xl'></i>
+                        <span class="absolute bottom-[-30px] left-[50px] transform -translate-x-1/2 bg-red-500 text-white font-semibold py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition duration-300">
+                            Logout
+                        </span>
+                    </a>
                 {% else %}
-                <a href="{% url 'login' %}"
-                    class="text-red-500 font-medium hover:text-red-700 transition duration-300 relative group">
-                    <i class='bx bx-log-in-circle text-2xl'></i>
-                    <span
-                        class="absolute bottom-[-30px] left-[50px] transform -translate-x-1/2 bg-red-500 text-white font-semibold py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition duration-300">
-                        Login
-                    </span>
-                </a>
+                    <a href="{% url 'login' %}" 
+                       class="text-red-500 font-medium hover:text-red-700 transition duration-300 relative group">
+                        <i class='bx bx-log-in-circle text-2xl'></i>
+                        <span class="absolute bottom-[-30px] left-[50px] transform -translate-x-1/2 bg-red-500 text-white font-semibold py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition duration-300">
+                            Login
+                        </span>
+                    </a>
                 {% endif %}
             </div>
+
             <!-- Mobile Menu Button -->
             <button id="menu-btn" class="md:hidden text-gray-700 focus:outline-none text-2xl">
                 ☰
             </button>
         </div>
     </nav>
+
     <!-- Page Content -->
     <div class="container mx-auto p-6 mt-24">
         {% block content %}{% endblock %}
@@ -89,20 +107,18 @@
             <a href="{% url 'contact' %}" class="text-gray-400 hover:text-white mx-2 transition">Contact Us</a>
         </div>
     </footer> -->
+
     <style>
         @keyframes bounceRotate {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: translateY(-10%) rotate(-15deg);
             }
-
             50% {
                 transform: translateY(0) rotate(15deg);
             }
         }
     </style>
-    </style>
+
     <script>
         // Toggle Mobile Menu with Smooth Animation
         document.getElementById('menu-btn').addEventListener('click', function () {
