@@ -4,63 +4,72 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated %}  <!-- ✅ Ensure user is logged in -->
-<h2 class="text-3xl font-bold text-gray-700 mb-6">Your Order History</h2>
+{% if request.user.is_authenticated %} <!-- ✅ Ensure user is logged in -->
+<h2 class="text-3xl font-bold text-gray-700 mb-2 text-center">Your Order History</h2>
 
-{% if orders %}
+<!-- Wrapper Div with Border -->
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md border border-gray-300">
+    {% if orders %}
     {% for order in orders %}
-    <div class="bg-white p-6 rounded-lg shadow-md mb-4">
-        <p class="text-lg font-bold">Order ID: {{ order.id }}</p>
-        <p class="text-gray-700"><strong>Date:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
-        <p class="text-gray-700"><strong>Total Price:</strong> Rs {{ order.total_price }}</p>
+    <div class="bg-gray-50 p-6 rounded-lg shadow-sm mb-6 border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-lg font-bold text-gray-800">Order ID: <span class="text-blue-500">{{ order.id }}</span></p>
+            <p class="text-sm text-gray-500">{{ order.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+        <p class="text-gray-700"><strong>Total Price:</strong> <span class="text-green-500">Rs {{ order.total_price
+                }}</span></p>
         <p class="text-gray-700"><strong>Payment Method:</strong> {{ order.payment_method }}</p>
         <p class="text-gray-700"><strong>Transaction ID:</strong> {{ order.transaction_id|default:"Not Provided" }}</p>
 
         <!-- 🔥 Payment Status -->
-        <p class="text-gray-700 font-bold">
+        <p class="text-gray-700 font-bold mt-2">
             Payment Status:
             {% if order.payment_status == "Pending" %}
-                <span class="text-yellow-500">Pending</span>
+            <span class="text-yellow-500">Pending</span>
             {% elif order.payment_status == "Confirmed" %}
-                <span class="text-green-500">Confirmed</span>
+            <span class="text-green-500">Confirmed</span>
             {% else %}
-                <span class="text-red-500">Rejected</span>
+            <span class="text-red-500">Rejected</span>
             {% endif %}
         </p>
 
         <!-- ✅ Order Status -->
-        <p class="text-gray-700 font-bold">
+        <p class="text-gray-700 font-bold mt-2">
             Order Status:
             {% if order.order_status == "Received" %}
-                <span class="text-blue-500">Received</span>
+            <span class="text-blue-500">Received</span>
             {% elif order.order_status == "Packed" %}
-                <span class="text-yellow-500">Packed</span>
+            <span class="text-yellow-500">Packed</span>
             {% elif order.order_status == "Dispatch" %}
-                <span class="text-orange-500">Dispatched</span>
+            <span class="text-orange-500">Dispatched</span>
             {% else %}
-                <span class="text-green-500">Delivered</span>
+            <span class="text-green-500">Delivered</span>
             {% endif %}
         </p>
 
-        <h3 class="text-xl font-bold mt-4">Order Items:</h3>
-        <ul class="list-disc ml-6">
+        <h3 class="text-lg font-bold mt-4 text-gray-800">Order Items:</h3>
+        <ul class="list-disc ml-6 text-gray-700">
             {% for item in order.orderitem_set.all %}
-                <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: Rs {{ item.price }}</li>
+            <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: Rs {{ item.price }}</li>
             {% endfor %}
         </ul>
     </div>
     {% endfor %}
+    {% else %}
+    <p class="text-gray-500 text-center">No orders placed yet.</p>
+    {% endif %}
+    <a href="{% url 'home' %}"
+        class="mt-24 block text-center bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition w-40 mx-auto">
+        Back to Home
+    </a>
+</div>
+
+
 {% else %}
-    <p class="text-gray-500">No orders placed yet.</p>
-{% endif %}
-
-<a href="{% url 'home' %}" class="mt-6 block text-center bg-green-500 text-white py-2 rounded-md">Back to Home</a>
-
-{% else %}  
-    <!-- 🔥 Redirect users who try to access order history without logging in -->
-    <script>
-        window.location.href = "{% url 'login' %}";
-    </script>
+<!-- 🔥 Redirect users who try to access order history without logging in -->
+<script>
+    window.location.href = "{% url 'login' %}";
+</script>
 {% endif %}
 
 {% endblock %}

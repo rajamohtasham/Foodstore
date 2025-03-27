@@ -3,57 +3,58 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<h2 class="text-3xl font-bold text-gray-700 mb-6">Checkout</h2>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <form method="POST" action="{% url 'checkout' %}" class="bg-white max-w-md w-full p-6 rounded-lg shadow-md">
+        {% csrf_token %}
 
-<form method="POST" action="{% url 'checkout' %}" class="bg-white p-6 rounded-lg shadow-md">
-    {% csrf_token %}
+        {% if error %}
+            <p class="text-red-500">{{ error }}</p>
+        {% endif %}
 
-    {% if error %}
-        <p class="text-red-500">{{ error }}</p>
-    {% endif %}
+        <h2 class="text-3xl font-bold text-gray-700 mb-6 text-center">Checkout</h2>
 
-    <div class="mb-4">
-        <label class="block text-gray-700">Full Name</label>
-        <input type="text" name="full_name" class="w-full p-2 border rounded-md" required>
-    </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Full Name</label>
+            <input type="text" name="full_name" class="w-full p-2 border rounded-md" required>
+        </div>
 
-    <div class="mb-4">
-        <label class="block text-gray-700">Email</label>
-        <input type="email" name="email" class="w-full p-2 border rounded-md" required>
-    </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Email</label>
+            <input type="email" name="email" class="w-full p-2 border rounded-md" required>
+        </div>
 
-    <div class="mb-4">
-        <label class="block text-gray-700">Address</label>
-        <textarea name="address" class="w-full p-2 border rounded-md" required></textarea>
-    </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Address</label>
+            <textarea name="address" class="w-full p-2 border rounded-md" required></textarea>
+        </div>
 
-    <div class="mb-4">
-        <label class="block text-gray-700">Phone Number</label>
-        <input type="text" name="phone" class="w-full p-2 border rounded-md" required>
-    </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Phone Number</label>
+            <input type="text" name="phone" class="w-full p-2 border rounded-md" required>
+        </div>
 
-    <!-- Payment Method Selection -->
-    <div class="mb-4">
-        <label class="block text-gray-700">Select Payment Method</label>
-        <select name="payment_method" class="w-full p-2 border rounded-md">
-            <option value="Easypaisa">Easypaisa</option>
-            <option value="JazzCash">JazzCash</option>
-            <option value="Bank Transfer">Bank Transfer</option>
-        </select>
-    </div>
+        <!-- Payment Method Selection -->
+        <div class="mb-4">
+            <label class="block text-gray-700">Select Payment Method</label>
+            <select name="payment_method" class="w-full p-2 border rounded-md">
+                <option value="Easypaisa">Easypaisa</option>
+                <option value="JazzCash">JazzCash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+        </div>
 
-    <!-- Transaction ID Input -->
-    <div class="mb-4">
-        <label class="block text-gray-700">Transaction ID (if available)</label>
-        <input type="text" name="transaction_id" class="w-full p-2 border rounded-md" placeholder="Enter Transaction ID">
-        <p class="text-gray-500 text-sm mt-1">Send payment to the given number and enter the transaction ID.</p>
-    </div>
+        <!-- Transaction ID Input -->
+        <div class="mb-4">
+            <label class="block text-gray-700">Transaction ID (if available)</label>
+            <input type="text" name="transaction_id" class="w-full p-2 border rounded-md" placeholder="Enter Transaction ID">
+            <p class="text-gray-500 text-sm mt-1">Send payment to the given number and enter the transaction ID.</p>
+        </div>
 
-    <h3 class="text-xl font-bold text-gray-700 mt-4">Total: Rs {{ total_price }}</h3>
+        <h3 class="text-xl font-bold text-gray-700 mt-4 text-center">Total: Rs {{ total_price }}</h3>
 
-    <button type="submit" class="block w-full text-center bg-green-500 text-white py-2 mt-4 rounded-md hover:bg-green-600 transition">
-        Place Order
-    </button>
-</form>
-
+        <button type="submit" class="block w-full text-center bg-green-500 text-white py-2 mt-4 rounded-md hover:bg-green-600 transition">
+            Place Order
+        </button>
+    </form>
+</div>
 {% endblock %}

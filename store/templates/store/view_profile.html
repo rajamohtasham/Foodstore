@@ -1,18 +1,25 @@
 {% extends "store/base.html" %}
 {% block content %}
-<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow">
-    <h2 class="text-2xl font-semibold mb-4">My Profile</h2>
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg ">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">My Profile</h2>
 
     <!-- Profile Icon -->
-    <div class="flex justify-center mb-4">
-        <img src="https://www.svgrepo.com/show/382106/profile-circle.svg" class="w-24 h-24 rounded-full" alt="Profile Icon">
+    <div class="flex justify-center mb-6">
+        <div class="w-24 h-24 bg-green-100 flex items-center justify-center rounded-full">
+            <i class="bx bx-user text-6xl text-green-500"></i>
+        </div>
     </div>
 
-    <p><strong>Username:</strong> {{ user_profile.user.username }}</p>
-    <p><strong>Email:</strong> {{ user_profile.user.email }}</p>
-    <p><strong>Phone:</strong> {{ user_profile.phone|default:"Not Provided" }}</p>
-    <p><strong>Address:</strong> {{ user_profile.address|default:"Not Provided" }}</p>
+    <div class="text-gray-700 text-lg space-y-4">
+        <p><strong class="font-semibold text-gray-900">Username:</strong> {{ user_profile.user.username }}</p>
+        <!-- Uncomment if email is needed -->
+        <!-- <p><strong class="font-semibold text-gray-900">Email:</strong> {{ user_profile.user.email }}</p> -->
+        <p><strong class="font-semibold text-gray-900">Phone:</strong> {{ user_profile.phone|default:"Not Provided" }}</p>
+        <p><strong class="font-semibold text-gray-900">Address:</strong> {{ user_profile.address|default:"Not Provided" }}</p>
+    </div>
 
-    <a href="{% url 'edit_profile' %}" class="block bg-blue-500 text-white px-4 py-2 mt-4 rounded text-center">Edit Profile</a>
+    <a href="{% url 'edit_profile' %}" class="block w-full text-center bg-blue-600 text-white py-3 rounded-lg text-lg font-medium transition duration-300 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 mt-6">
+        Edit Profile
+    </a>
 </div>
 {% endblock %}

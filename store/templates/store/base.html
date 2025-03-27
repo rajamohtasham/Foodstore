@@ -98,8 +98,8 @@
         {% block content %}{% endblock %}
     </div>
 
-     Footer 
-    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+      
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10 w-full relative  bottom-0">
         <p>© 2025 YumMart. All rights reserved.</p>
         <div class="mt-2">
             <a href="#" class="text-gray-400 hover:text-white mx-2 transition">Privacy Policy</a> |
@@ -115,6 +115,9 @@
             50% {
                 transform: translateY(0) rotate(15deg);
             }
+        }
+        .animate-bounce-rotate {
+            animation: bounceRotate 1.5s infinite;
         }
     </style>
 
