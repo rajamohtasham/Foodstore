@@ -8,9 +8,9 @@
 {% if cart_data %}
     <div class="grid grid-cols-1 gap-6">
         {% for item in cart_data %}
-        <div class="bg-white p-4 rounded-lg shadow-md flex items-center gap-4">
+        <div class="bg-white p-4 rounded-lg shadow-md flex  items-center gap-4">
             <!-- Product Image -->
-            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-20 h-20 object-cover rounded-md">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-20 h-20 o rounded-md">
 
             <div class="flex-1">
                 <h3 class="text-lg font-bold">{{ item.product.name }}</h3>
