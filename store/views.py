@@ -126,8 +126,9 @@ def checkout(request):
 # ✅ Order History (User-Specific)
 @login_required
 def order_history(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'store/order_history.html', {'orders': orders})
+
 
 # ✅ User Registration
 def register(request):
