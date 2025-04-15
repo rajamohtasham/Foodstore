@@ -6,7 +6,37 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Product, Category, Order, OrderItem, CartItem, UserProfile
 from .forms import UserProfileForm
+
 import requests
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = UserCreationForm.Meta.model
+        fields = ['username', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': 'w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500'
+            }),
+            'password1': forms.PasswordInput(attrs={
+                'class': 'w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500'
+            }),
+            'password2': forms.PasswordInput(attrs={
+                'class': 'w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500'
+            }),
+        }
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'store/register.html', {'form': form})
 
 # ✅ Home Page (Product Listing)
 def home(request):
@@ -131,16 +161,16 @@ def order_history(request):
 
 
 # ✅ User Registration
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserCreationForm()
-    return render(request, 'store/register.html', {'form': form})
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'store/register.html', {'form': form})
 
 # ✅ User Login
 def login_view(request):

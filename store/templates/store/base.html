@@ -20,7 +20,7 @@
             <!-- Logo -->
             <a href="{% url 'home' %}" class="group">
                 <img src="{% static 'images/logo2.png' %}" alt="YumMart Logo"
-                    class="h-24 w-22 transition-transform duration-500" style="animation: bounceRotate 2s infinite;">
+                    class="h-24 w-22 transition-transform duration-700" style="animation: bounce 2s infinite;">
             </a>
 
             <!-- Desktop Menu -->
@@ -49,11 +49,11 @@
                     🛒 Cart
                 </a>
 
-                <a href="{% url 'view_profile' %}" class="relative group text-blue-500 hover:text-blue-700">
-                    <i class="ri-map-pin-user-fill text-xl"></i>
+                <a href="{% url 'view_profile' %}" class="relative group text-blue-500 hover:text-blue-700 text-2xl">
+                    <i class='bx bx-user-circle'></i>
                     <span
-                        class="absolute bottom-[-40px] left-1/2 transform -translate-x-1/2 bg-blue-800 text-white text-xs w-24 font-semibold py-1 px-4 rounded opacity-0 group-hover:opacity-100 transition">
-                        View your profile
+                        class="absolute bottom-[-50px] left-[50px] transform -translate-x-1/2 bg-blue-800 text-white text-[15px] py-1 px-3 font-semibold  rounded opacity-0 group-hover:opacity-100 transition">
+                        Profile
                     </span>
                 </a>
 
@@ -61,7 +61,7 @@
                 <a href="{% url 'logout' %}" class="relative group text-red-500 hover:text-red-700">
                     <i class='bx bx-log-out-circle text-2xl'></i>
                     <span
-                        class="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 bg-red-500 text-white py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition">
+                        class="absolute bottom-[-40px] !left-[50px] transform -translate-x-1/2 bg-red-500 text-white text-[15px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition">
                         Logout
                     </span>
                 </a>
@@ -120,33 +120,28 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container mx-auto p-6 mt-28">
+    <div class=" pt-4 mt-20">
         {% block content %}{% endblock %}
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center p-4 mt-10 w-full">
-        <p>© 2025 YumMart. All rights reserved.</p>
-        <div class="mt-2">
-            <a href="#" class="footer-link">Privacy Policy</a> |
-            <a href="#" class="footer-link">Terms of Service</a> |
-            <a href="{% url 'contact' %}" class="footer-link">Contact Us</a>
-        </div>
-    </footer>
+   
 
     <!-- Styles -->
     <style>
-        @keyframes bounceRotate {
-
-            0%,
-            100% {
-                transform: translateY(-10%) rotate(-15deg);
-            }
-
-            50% {
-                transform: translateY(0) rotate(15deg);
-            }
+       
+       @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
         }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .bounce {
+        animation: bounce 1s ease-in-out infinite;
+    }
 
         .nav-link {
             @apply text-gray-700 font-medium hover:text-green-600 transition;
