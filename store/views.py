@@ -1,16 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.http import JsonResponse
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django import forms
+import requests
+
 from .models import Product, Category, Order, OrderItem, CartItem, UserProfile
 from .forms import UserProfileForm
 
-import requests
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
-
+# ✅ Custom User Creation Form
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = UserCreationForm.Meta.model
@@ -27,6 +26,7 @@ class CustomUserCreationForm(UserCreationForm):
             }),
         }
 
+# ✅ User Registration
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -37,6 +37,7 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'store/register.html', {'form': form})
+
 
 # ✅ Home Page (Product Listing)
 def home(request):
@@ -61,10 +62,11 @@ def category_products(request, category_slug):
         'categories': categories
     })
 
-# ✅ Categories Page (Newly Added)
+# ✅ Categories Page
 def categories(request):
     categories = Category.objects.all()
     return render(request, 'store/categories.html', {'categories': categories})
+
 
 # ✅ Cart View
 @login_required
@@ -108,7 +110,7 @@ def update_cart(request, product_id):
 
     return redirect("cart")
 
-# ✅ Remove Item from Cart
+# ✅ Remove from Cart
 @login_required
 def remove_from_cart(request, product_id):
     cart_item = get_object_or_404(CartItem, user=request.user, product_id=product_id)
@@ -124,81 +126,59 @@ def checkout(request):
         return redirect('cart')
 
     if request.method == 'POST':
-        name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        phone = request.POST.get('phone')
-        payment_method = request.POST.get('payment_method')
-        transaction_id = request.POST.get('transaction_id', '')
-
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
-
         order = Order.objects.create(
             user=request.user,
-            name=name,
-            email=email,
-            address=address,
-            phone=phone,
-            total_price=total_price,
-            payment_method=payment_method,
-            transaction_id=transaction_id
+            name=request.POST.get('full_name'),
+            email=request.POST.get('email'),
+            address=request.POST.get('address'),
+            phone=request.POST.get('phone'),
+            total_price=sum(item.product.price * item.quantity for item in cart_items),
+            payment_method=request.POST.get('payment_method'),
+            transaction_id=request.POST.get('transaction_id', '')
         )
 
         for item in cart_items:
             OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity, price=item.product.price)
 
         cart_items.delete()
-
         return render(request, 'store/order_confirmation.html', {'order': order})
 
     return render(request, 'store/checkout.html')
 
-# ✅ Order History (User-Specific)
+# ✅ Order History
 @login_required
 def order_history(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'store/order_history.html', {'orders': orders})
 
 
-# ✅ User Registration
-# def register(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = UserCreationForm()
-#     return render(request, 'store/register.html', {'form': form})
-
-# ✅ User Login
+# ✅ Login View
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
+            login(request, form.get_user())
             return redirect('home')
     else:
         form = AuthenticationForm()
     return render(request, 'store/login.html', {'form': form})
 
-# ✅ User Logout
+# ✅ Logout View
 def logout_view(request):
     logout(request)
     return redirect('home')
 
-# ✅ Profile View
+
+# ✅ View Profile
 @login_required
 def view_profile(request):
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
     return render(request, 'store/view_profile.html', {'user_profile': user_profile})
 
 # ✅ Edit Profile
 @login_required
 def edit_profile(request):
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
     
     if request.method == "POST":
         form = UserProfileForm(request.POST, instance=user_profile)
@@ -213,18 +193,24 @@ def edit_profile(request):
 # ✅ Contact Form (Web3Forms API)
 def contact(request):
     if request.method == "POST":
-        access_key = "178a59ab-a8a0-4d12-95e5-b57a4f38b727"
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        message = request.POST.get("message")
+        data = {
+            "access_key": "178a59ab-a8a0-4d12-95e5-b57a4f38b727",
+            "name": request.POST.get("name"),
+            "email": request.POST.get("email"),
+            "message": request.POST.get("message")
+        }
 
-        data = {"access_key": access_key, "name": name, "email": email, "message": message}
         response = requests.post("https://api.web3forms.com/submit", json=data)
         result = response.json()
 
-        return render(request, "store/contact.html", {"result": "Message sent!"} if result.get("success") else {"form_error": "An error occurred."})
+        return render(request, "store/contact.html", {
+            "result": "Message sent!" if result.get("success") else None,
+            "form_error": None if result.get("success") else "An error occurred."
+        })
 
     return render(request, "store/contact.html")
 
+
+# ✅ Order Success Page
 def order_success(request):
     return render(request, 'store/order_success.html')

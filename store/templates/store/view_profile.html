@@ -1,24 +1,46 @@
 {% extends "store/base.html" %}
+{% block title %}Profile{% endblock title %}
 {% block content %}
-<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg relative">
-    <span class="absolute right-0 top-0 p-3">
-        <a href="{% url 'home' %}" class="text-gray-500 hover:text-gray-700">
-            <i class='bx bx-x text-2xl'></i>
-        </a>
-    </span>
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">My Profile</h2>
-    <div class="flex justify-center mb-6">
-        <div class="w-24 h-24 bg-green-100 flex items-center justify-center rounded-full">
-            <i class="bx bx-user text-6xl text-green-500"></i>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-2xl relative">
+        <!-- Close Button -->
+        <span class="absolute right-4 top-4">
+            <a href="{% url 'home' %}" class="text-gray-400 hover:text-gray-600 transition">
+                <i class='bx bx-x text-2xl'></i>
+            </a>
+        </span>
+
+        <!-- Profile Heading -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">My Profile</h2>
+
+        <!-- Profile Icon -->
+        <div class="flex justify-center mb-6">
+            <div class="w-24 h-24 bg-green-100 flex items-center justify-center rounded-full shadow-inner">
+                <i class="bx bx-user text-6xl text-green-500"></i>
+            </div>
         </div>
+
+        <!-- Profile Details -->
+        <div class="text-gray-700 text-base sm:text-lg space-y-4">
+            <p>
+                <strong class="font-semibold text-gray-900">Username:</strong>
+                {{ user_profile.user.username }}
+            </p>
+            <p>
+                <strong class="font-semibold text-gray-900">Phone:</strong>
+                {{ user_profile.phone|default:"Not Provided" }}
+            </p>
+            <p>
+                <strong class="font-semibold text-gray-900">Address:</strong>
+                {{ user_profile.address|default:"Not Provided" }}
+            </p>
+        </div>
+
+        <!-- Edit Button -->
+        <a href="{% url 'edit_profile' %}"
+           class="block w-full text-center bg-blue-600 text-white py-3 rounded-xl text-lg font-medium mt-8 transition duration-300 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+            Edit Profile
+        </a>
     </div>
-    <div class="text-gray-700 text-lg space-y-4">
-        <p><strong class="font-semibold text-gray-900">Username:</strong> {{ user_profile.user.username }}</p>
-        <p><strong class="font-semibold text-gray-900">Phone:</strong> {{ user_profile.phone|default:"Not Provided" }}</p>
-        <p><strong class="font-semibold text-gray-900">Address:</strong> {{ user_profile.address|default:"Not Provided" }}</p>
-    </div>
-    <a href="{% url 'edit_profile' %}" class="block w-full text-center bg-blue-600 text-white py-3 rounded-lg text-lg font-medium transition duration-300 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 mt-6">
-        Edit Profile
-    </a>
 </div>
 {% endblock %}
