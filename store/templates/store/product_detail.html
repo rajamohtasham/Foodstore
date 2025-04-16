@@ -3,33 +3,26 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-<!-- Lightbox2 CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet" />
 
-<div class="bg-white p-4 rounded-md shadow-md max-w-xl mx-auto container relative    ">
+<div class="bg-white p-4 rounded-md shadow-md max-w-xl mx-auto container relative">
     <span class="absolute right-0 top-0 p-3">
         <a href="{% url 'home' %}" class="text-gray-500 hover:text-gray-700">
             <i class='bx bx-x text-2xl'></i>
-        </a>   
+        </a>
     </span>
-    <!-- Main Product Image with Lightbox -->
     <div class="w-full h-40 flex justify-center relative group">
         <a href="{{ product.image.url }}" data-lightbox="product-gallery">
             <img id="mainImage" src="{{ product.image.url }}" alt="{{ product.name }}"
                 class="h-full object-contain rounded-md transition-transform duration-300 ease-in-out group-hover:scale-105 cursor-zoom-in" />
         </a>
     </div>
-
-    <!-- Thumbnail Images -->
     {% if product.images.all %}
     <div class="mt-3 flex justify-center space-x-2 overflow-x-auto pb-1">
-        <!-- Primary Image as First Thumbnail -->
         <a data-lightbox="product-gallery">
             <img src="{{ product.image.url }}" class="w-16 h-16 object-cover rounded border cursor-pointer"
                 onclick="switchImage('{{ product.image.url }}')" alt="Main Image">
         </a>
-
-        <!-- Additional Images -->
         {% for img in product.images.all %}
         <a data-lightbox="product-gallery">
             <img src="{{ img.image.url }}" class="w-16 h-16 object-cover rounded border cursor-pointer"
@@ -38,23 +31,16 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Product Info -->
     <div class="flex flex-col justify-between items-center">
         <div>
             <h2 class="text-xl font-semibold mt-4">{{ product.name }}</h2>
             <p class="text-gray-600 text-sm mt-1">Category: {{ product.category.name }}</p>
-
         </div>
         <div>
             <p class="text-gray-800 text-center font-medium mt-4">Price: Rs {{ product.price }}</p>
             <p class="text-gray-500 text-sm mt-2">{{ product.description }}</p>
-
         </div>
     </div>
-
-
-    <!-- Quantity and Cart Form -->
     <form action="{% url 'add_to_cart' product.id %}" method="POST" class="mt-3 relative">
         {% csrf_token %}
         <div class="flex items-center absolute -top-8 right-0">
@@ -65,20 +51,15 @@
             <button type="button" onclick="changeQuantity(1)"
                 class="bg-gray-200 px-2 py-1 rounded-r-md text-sm">+</button>
         </div>
-        <button type="submit" class="bg-green-500 text-white px-4 py-2 mt-3 rounded-md w-full text-sm">Add to
-            Cart</button>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 mt-3 rounded-md w-full text-sm">Add to Cart</button>
     </form>
 </div>
-<!-- Lightbox2 JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-
-<!-- Custom Script -->
 <script>
     function switchImage(newSrc) {
         const mainImage = document.getElementById("mainImage");
         mainImage.src = newSrc;
     }
-
     function changeQuantity(amount) {
         let quantityInput = document.getElementById('quantity');
         let currentValue = parseInt(quantityInput.value);

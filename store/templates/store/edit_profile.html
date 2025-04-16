@@ -1,33 +1,24 @@
 {% extends "store/base.html" %}
-{% block content %}
-<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg ">
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Edit Profile</h2>
 
-    <!-- Profile Icon -->
-    <div class="flex justify-center ">
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Edit Profile</h2>
+    <div class="flex justify-center">
         <div class="w-20 h-20 bg-green-100 flex items-center justify-center rounded-full">
             <i class="bx bx-user text-4xl text-green-500"></i>
         </div>
     </div>
-
     <form method="POST" class="space-x-3">
         {% csrf_token %}
-
-        <!-- Phone Input -->
         <div>
             <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone</label>
             {{ form.phone }}
         </div>
-
-        <!-- Address Input -->
         <div>
             <label for="address" class="block text-gray-700 font-semibold mt-2 mb-2">Address</label>
             {{ form.address }}
         </div>
-
-        <!-- Save Button -->
-        <button type="submit"
-            class="w-full mt-3 bg-blue-600 text-white py-2 rounded-lg text-lg font-medium transition duration-300 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+        <button type="submit" class="w-full mt-3 bg-blue-600 text-white py-2 rounded-lg text-lg font-medium transition duration-300 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
             Save Changes
         </button>
     </form>
