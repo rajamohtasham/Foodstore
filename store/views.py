@@ -117,13 +117,14 @@ def remove_from_cart(request, product_id):
     cart_item.delete()
     return redirect('cart')
 
-# ✅ Checkout
 @login_required
 def checkout(request):
     cart_items = CartItem.objects.filter(user=request.user)
-    
+
     if not cart_items:
         return redirect('cart')
+
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
 
     if request.method == 'POST':
         order = Order.objects.create(
@@ -132,18 +133,27 @@ def checkout(request):
             email=request.POST.get('email'),
             address=request.POST.get('address'),
             phone=request.POST.get('phone'),
-            total_price=sum(item.product.price * item.quantity for item in cart_items),
+            total_price=total_price,
             payment_method=request.POST.get('payment_method'),
             transaction_id=request.POST.get('transaction_id', '')
         )
 
         for item in cart_items:
-            OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity, price=item.product.price)
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.price
+            )
 
         cart_items.delete()
         return render(request, 'store/order_confirmation.html', {'order': order})
 
-    return render(request, 'store/checkout.html')
+    return render(request, 'store/checkout.html', {
+        'cart_items': cart_items,
+        'total_price': total_price
+    })
+
 
 # ✅ Order History
 @login_required
