@@ -38,7 +38,6 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'store/register.html', {'form': form})
 
-
 # ✅ Home Page (Product Listing)
 def home(request):
     query = request.GET.get('q', '')
@@ -66,7 +65,6 @@ def category_products(request, category_slug):
 def categories(request):
     categories = Category.objects.all()
     return render(request, 'store/categories.html', {'categories': categories})
-
 
 # ✅ Cart View
 @login_required
@@ -117,6 +115,7 @@ def remove_from_cart(request, product_id):
     cart_item.delete()
     return redirect('cart')
 
+# ✅ Checkout
 @login_required
 def checkout(request):
     cart_items = CartItem.objects.filter(user=request.user)
@@ -154,13 +153,18 @@ def checkout(request):
         'total_price': total_price
     })
 
-
-# ✅ Order History
+# ✅ Order History (with filtering)
 @login_required
 def order_history(request):
+    status = request.GET.get("status", "All")
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'store/order_history.html', {'orders': orders})
 
+    if status != "All":
+        orders = orders.filter(payment_status=status)
+
+    return render(request, 'store/order_history.html', {
+        'orders': orders
+    })
 
 # ✅ Login View
 def login_view(request):
@@ -177,7 +181,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
-
 
 # ✅ View Profile
 @login_required
@@ -219,7 +222,6 @@ def contact(request):
         })
 
     return render(request, "store/contact.html")
-
 
 # ✅ Order Success Page
 def order_success(request):

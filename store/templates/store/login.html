@@ -1,53 +1,80 @@
 {% extends 'store/base.html' %}
 {% load widget_tweaks %}
 {% block title %}Login{% endblock %}
+
 {% block content %}
-<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg relative">
-    <span class="absolute top-4 right-4">
-        <a href="{% url 'home' %}" class="text-blue-500 hover:underline">
-            <i class='bx bx-x text-2xl text-black'></i>
-        </a>
-    </span>
-    <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Login</h2>
-    {% if form.errors %}
-    <div class="bg-red-100 text-red-600 p-3 rounded-md text-center mb-4 border border-red-400">
-        <p>Invalid username or password. Please try again.</p>
-    </div>
-    {% endif %}
-    <form method="POST" class="space-y-5">
-        {% csrf_token %}
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2">Username</label>
-            <input type="text" name="username"
-                class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
-                placeholder="Enter your username">
+<div class="mt-16 flex items-center justify-center px-4">
+    <div class="w-full max-w-md bg-white p-6 rounded-xl shadow-2xl relative">
+
+        <!-- Close Button -->
+        <span class="absolute top-3 right-3">
+            <a href="{% url 'home' %}" class="text-gray-400 hover:text-red-500 transition">
+                <i class='bx bx-x text-xl'></i>
+            </a>
+        </span>
+
+        <!-- Heading -->
+        <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Login</h2>
+
+        <!-- Error Message -->
+        {% if form.errors %}
+        <div class="bg-red-100 text-red-600 p-2 rounded-md text-center mb-4 text-sm border border-red-400">
+            Invalid username or password. Please try again.
         </div>
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2">Password</label>
-            <div class="relative">
-                <input type="password" name="password" id="login_pass"
-                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none pr-10"
-                    placeholder="Enter your password">
-                <button type="button" onclick="togglePassword('login_pass')" class="absolute inset-y-0 right-3 text-gray-500">
-                    👁️
-                </button>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                {% render_field form.username class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none text-sm" placeholder="Enter your username" %}
             </div>
-        </div>
-        <button type="submit"
-            class="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-medium transition duration-300 hover:bg-green-700 focus:ring-4 focus:ring-green-300">
-            Login
-        </button>
-    </form>
-    <p class="mt-6 text-center text-gray-600">
-        Don't have an account?
-        <a href="{% url 'register' %}" class="text-blue-500 font-semibold hover:underline">Register here</a>
-    </p>
+
+            <!-- Password -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    {% render_field form.password id="login_pass" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none text-sm pr-10" placeholder="Enter your password" %}
+                    <button type="button" onclick="togglePassword('login_pass')"
+                        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-green-600 text-sm">
+                        <i id="pass_icon" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md text-sm font-semibold transition duration-300 focus:ring-4 focus:ring-green-300">
+                Login
+            </button>
+        </form>
+
+        <!-- Register Link -->
+        <p class="mt-4 text-center text-sm text-gray-600">
+            Don't have an account?
+            <a href="{% url 'register' %}" class="text-green-600 font-medium hover:underline">Register here</a>
+        </p>
+    </div>
 </div>
 
+<!-- Password Toggle Script -->
 <script>
     function togglePassword(id) {
         const input = document.getElementById(id);
-        input.type = input.type === "password" ? "text" : "password";
+        const icon = document.getElementById("pass_icon");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
     }
 </script>
 {% endblock %}

@@ -3,8 +3,9 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<div class="flex justify-center items-center bg-gray-100">
-    <form method="POST" action="{% url 'checkout' %}" class="bg-white max-w-md w-full p-6 rounded-lg shadow-md relative">
+<div class="flex justify-center items-center ">
+    <form method="POST" action="{% url 'checkout' %}"
+        class="bg-white max-w-md w-full p-6 rounded-lg shadow-md relative">
         <span class="absolute right-0 top-0 p-3">
             <a href="{% url 'home' %}" class="text-gray-500 hover:text-gray-700">
                 <i class='bx bx-x text-2xl'></i>
@@ -44,11 +45,13 @@
                 </select>
             </div>
             <div class="mb-4 w-[50%]">
-                <input type="text" name="transaction_id" class="w-full p-2 border rounded-md" placeholder="Enter Transaction ID">
+                <input type="text" name="transaction_id" class="w-full p-2 border rounded-md"
+                    placeholder="Enter Transaction ID">
             </div>
         </div>
         <h3 class="text-xl font-bold text-gray-700 mt-4 text-center">Total: Rs {{ total_price }} </h3>
-        <button type="submit" class="block w-full text-center bg-green-500 text-white py-2 mt-4 rounded-md hover:bg-green-600 transition">
+        <button type="submit"
+            class="block w-full text-center bg-green-500 text-white py-2 mt-4 rounded-md hover:bg-green-600 transition">
             Place Order
         </button>
     </form>
