@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 
 <head>
     <meta charset="UTF-8" />
@@ -14,36 +14,37 @@
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class=" font-[Poppins,sans-serif] w-full">
-    <nav class="bg-green-200 fixed w-full top-0 left-0 z-50 ">
+
+<body class="font-[Poppins,sans-serif] w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <nav class="bg-green-200 dark:bg-gray-800 text-gray-800 dark:text-white fixed w-full top-0 left-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{% url 'home' %}">
-                        <h1 class="text-3xl font-bold !text-gray-500">
-                            Yum<span class="t drop-shadow-md text-red-400 ">Mart</span>
+                        <h1 class="text-3xl font-bold text-gray-700 dark:text-white">
+                            Yum<span class="drop-shadow-md text-red-400">Mart</span>
                         </h1>
-                        <!-- <img src="{% static 'images/logo2.png' %}" class="h-16 w-auto animate-bounce" alt="YumMart Logo" /> -->
                     </a>
                 </div>
+
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8 items-center text-[17px]">
-                    <a href="{% url 'home' %}" class="hover:text-gray-400 text-gray-700   transition">Home</a>
+                    <a href="{% url 'home' %}" class="hover:text-gray-400 transition">Home</a>
 
                     <!-- Categories Dropdown -->
                     <div class="relative group">
-                        <a href="{% url 'categories' %}" class="text-gray-700 hover:text-gray-400 transition font-medium">
+                        <a href="{% url 'categories' %}" class="hover:text-gray-400 transition font-medium">
                             Categories
                             <i class="ri-arrow-down-s-line ml-1"></i>
                         </a>
                         <div
-                            class="absolute left-0 mt-2 hidden group-hover:block bg-white shadow-lg rounded-md border z-20 w-48">
+                            class="absolute left-0 mt-2 hidden group-hover:block bg-white dark:bg-gray-700 shadow-lg rounded-md border z-20 w-48">
                             <ul class="py-2">
                                 {% for category in categories %}
                                 <li>
                                     <a href="{% url 'category_products' category.slug %}"
-                                        class="block px-4 py-2 hover:bg-green-300 hover:text-white transition">
+                                        class="block px-4 py-2 hover:bg-green-300 dark:hover:bg-green-500 hover:text-white transition">
                                         {{ category.name }}
                                     </a>
                                 </li>
@@ -51,23 +52,23 @@
                             </ul>
                         </div>
                     </div>
-                    <a href="{% url 'order_history' %}" class="hover:text-gray-400 text-gray-700 transition">Order
-                        History</a>
-                    <a href="{% url 'contact' %}" class="hover:text-gray-400 text-gray-700 transition">Contact Us</a>
-
-
+                    <a href="{% url 'order_history' %}" class="hover:text-gray-400 transition">Order History</a>
+                    <a href="{% url 'contact' %}" class="hover:text-gray-400 transition">Contact Us</a>
                 </div>
-                <!-- Profile and Auth -->
-                <div class="hidden md:flex items-center space-x-5 ">
+
+                <!-- Profile + Cart + Dark Mode -->
+                <div class="hidden md:flex items-center space-x-5">
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-toggle" class="text-2xl hover:text-black dark:hover:text-white transition">
+                        <i class="ri-moon-line"></i>
+                    </button>
 
                     {% if request.user.is_authenticated %}
-                    <!-- Show Profile Image if available -->
                     <a href="{% url 'view_profile' %}" class="relative group">
                         {% if request.user.profile.image %}
                         <img src="{{ request.user.profile.image.url }}" alt="Profile"
                             class="w-9 h-9 rounded-full object-cover ring-2 ring-blue-500 hover:ring-blue-700 transition" />
                         {% else %}
-                        <!-- Fallback Icon -->
                         <i class="ri-user-3-line text-blue-600 hover:text-blue-800 transition"></i>
                         {% endif %}
                         <span
@@ -75,8 +76,6 @@
                             Profile
                         </span>
                     </a>
-
-                    <!-- Logout Icon -->
                     <a href="{% url 'logout' %}" class="relative group text-red-500 hover:text-red-700 transition">
                         <i class="ri-logout-box-line"></i>
                         <span
@@ -84,9 +83,7 @@
                             Logout
                         </span>
                     </a>
-
                     {% else %}
-                    <!-- Not Logged In -->
                     <a href="{% url 'login' %}" class="relative group text-green-600 hover:text-green-800 transition">
                         <i class="ri-login-box-line"></i>
                         <span
@@ -95,48 +92,51 @@
                         </span>
                     </a>
                     {% endif %}
+
                     <a href="{% url 'cart' %}"
-                        class="px-4 py-2 bg-green-500 text-white rounded-md  transition shadow-md">
-                        <span class="text-wh"><i class="fa-solid fa-cart-plus"> </i> </span> Cart
+                        class="px-4 py-2 bg-green-500 text-white rounded-md transition shadow-md">
+                        <i class="fa-solid fa-cart-plus"></i> Cart
                     </a>
                 </div>
+
                 <!-- Mobile Menu Button -->
-                <button id="menu-btn" class="md:hidden text-3xl text-gray-700">
+                <button id="menu-btn" class="md:hidden text-3xl text-gray-700 dark:text-white">
                     ☰
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu Backdrop -->
+
+        <!-- Mobile Backdrop -->
         <div id="mobile-backdrop"
             class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden transition-opacity duration-300"></div>
+
         <!-- Mobile Menu -->
         <div id="mobile-menu"
-            class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg px-6 py-6 space-y-5 border-l z-50 transform translate-x-full transition-transform duration-300 md:hidden">
+            class="fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-6 space-y-5 border-l z-50 transform translate-x-full transition-transform duration-300 md:hidden">
             <div class="flex justify-between items-center mb-6">
-                <span class="text-xl font-bold text-green-600">Menu</span>
+                <span class="text-xl font-bold text-green-600 dark:text-green-400">Menu</span>
                 <button id="close-menu" class="text-2xl text-gray-500 hover:text-red-500">&times;</button>
             </div>
-            <a href="{% url 'home' %}"
-                class="flex items-center gap-2 text-lg text-gray-700 hover:text-green-600 transition"><i
-                    class="ri-home-4-line"></i> Home</a>
+            <a href="{% url 'home' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition">
+                <i class="ri-home-4-line"></i> Home</a>
+
             <div>
-                <span class="block text-gray-700 font-medium mb-1">📂 Categories</span>
+                <span class="block font-medium mb-1">📂 Categories</span>
                 <div class="ml-3 space-y-1">
                     {% for category in categories %}
                     <a href="{% url 'category_products' category.slug %}"
-                        class="block text-gray-600 hover:text-green-600 transition">• {{ category.name }}</a>
+                        class="block hover:text-green-600 transition">• {{ category.name }}</a>
                     {% endfor %}
                 </div>
             </div>
             <a href="{% url 'order_history' %}"
-                class="flex items-center gap-2 text-lg text-gray-700 hover:text-green-600 transition"><i
+                class="flex items-center gap-2 text-lg hover:text-green-600 transition"><i
                     class="ri-file-list-3-line"></i> Order History</a>
-            <a href="{% url 'cart' %}"
-                class="flex items-center gap-2 text-lg text-gray-700 hover:text-green-600 transition"><i
+            <a href="{% url 'cart' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition"><i
                     class="ri-shopping-cart-2-line"></i> Cart</a>
             <a href="{% url 'view_profile' %}"
-                class="flex items-center gap-2 text-lg text-gray-700 hover:text-green-600 transition"><i
-                    class="ri-user-3-line"></i> Profile</a>
+                class="flex items-center gap-2 text-lg hover:text-green-600 transition"><i class="ri-user-3-line"></i>
+                Profile</a>
             {% if request.user.is_authenticated %}
             <a href="{% url 'logout' %}"
                 class="flex items-center gap-2 text-lg text-red-500 hover:text-red-700 transition"><i
@@ -149,31 +149,64 @@
         </div>
     </nav>
 
-    <div class="pt-24 px-4">
+    <!-- Content Block -->
+    <div class="pt-24">
         {% block content %}{% endblock %}
     </div>
+
+    <!-- Footer with Dark Mode Support -->
+    <footer class="bg-green-300 dark:bg-gray-800 text-gray-900 dark:text-white text-center p-6 w-full shadow-md">
+        <p class="text-lg font-semibold">© 2025 YumMart. All rights reserved.</p>
+        <div class="mt-3 space-x-4 text-sm">
+            <a href="#" class="hover:underline hover:text-green-800 dark:hover:text-green-300 font-medium">Privacy
+                Policy</a>
+            <span>|</span>
+            <a href="#" class="hover:underline hover:text-green-800 dark:hover:text-green-300 font-medium">Terms of
+                Service</a>
+            <span>|</span>
+            <a href="{% url 'contact' %}"
+                class="hover:underline hover:text-green-800 dark:hover:text-green-300 font-medium">Contact Us</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script>
         const menuBtn = document.getElementById("menu-btn");
         const mobileMenu = document.getElementById("mobile-menu");
         const mobileBackdrop = document.getElementById("mobile-backdrop");
         const closeMenu = document.getElementById("close-menu");
 
-        menuBtn.addEventListener("click", function () {
+        menuBtn.addEventListener("click", () => {
             mobileMenu.classList.remove("translate-x-full");
             mobileBackdrop.classList.remove("hidden");
         });
-        closeMenu.addEventListener("click", function () {
+        closeMenu.addEventListener("click", () => {
             mobileMenu.classList.add("translate-x-full");
             mobileBackdrop.classList.add("hidden");
         });
-        mobileBackdrop.addEventListener("click", function () {
+        mobileBackdrop.addEventListener("click", () => {
             mobileMenu.classList.add("translate-x-full");
             mobileBackdrop.classList.add("hidden");
         });
 
-        // Initialize Lucide icons
-        lucide.createIcons();
+        // Dark Mode Toggle Script
+        const toggleBtn = document.getElementById("dark-toggle");
+        toggleBtn.addEventListener("click", () => {
+            document.documentElement.classList.toggle("dark");
+            localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+        });
+
+        // Load Theme Preference
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+        }
     </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 
 </html>
