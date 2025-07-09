@@ -6,6 +6,6 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['phone', 'address']
         widgets = {
-            'phone': forms.TextInput(attrs={'class': 'w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500 sm:text-sm' 'form-input', 'placeholder': 'Enter phone number'}),
-            'address': forms.Textarea(attrs={'class': 'w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500 sm:text-sm' 'form-textarea', 'placeholder': 'Enter address', 'rows': 3}),
+            'phone': forms.TextInput(attrs={'class': ' dark:text-white dark:bg-transparent w-full  border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500 sm:text-sm' 'form-input', 'placeholder': 'Enter phone number'}),
+            'address': forms.Textarea(attrs={'class': 'dark:text-white dark:bg-transparent  w-full h-12 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-indigo-500 sm:text-sm' 'form-textarea', 'placeholder': 'Enter address', 'rows': 3}),
         }
