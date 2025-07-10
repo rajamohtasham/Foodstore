@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django import forms
 import requests
-
 from .models import Product, Category, Order, OrderItem, CartItem, UserProfile
 from .forms import UserProfileForm
 
@@ -186,22 +185,40 @@ def logout_view(request):
 @login_required
 def view_profile(request):
     user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
-    return render(request, 'store/view_profile.html', {'user_profile': user_profile})
-
-# ✅ Edit Profile
-@login_required
-def edit_profile(request):
-    user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
     
-    if request.method == "POST":
-        form = UserProfileForm(request.POST, instance=user_profile)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
             return redirect('view_profile')
     else:
         form = UserProfileForm(instance=user_profile)
-    
-    return render(request, 'store/edit_profile.html', {'form': form})
+
+    return render(request, 'store/view_profile.html', {'form': form, 'user_profile': user_profile})
+
+# ✅ Edit Profile
+@login_required
+def edit_profile(request):
+    user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
+
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('view_profile')
+    else:
+        form = UserProfileForm(instance=user_profile, user=request.user)
+
+    return render(request, 'store/edit_profile.html', {
+        'form': form,
+        'user_profile': user_profile
+    })
+
+    # ✅ Also pass user_profile to the template so it shows current image
+    return render(request, 'store/edit_profile.html', {
+        'form': form,
+        'user_profile': user_profile
+    })
 
 # ✅ Contact Form (Web3Forms API)
 def contact(request):

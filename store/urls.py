@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from .views import (
     home, product_detail, category_products, cart, add_to_cart, remove_from_cart, 
     checkout, order_success, order_history, register, login_view, logout_view, 
@@ -28,4 +29,9 @@ urlpatterns = [
     path('profile/edit/', edit_profile, name='edit_profile'),
     
     path('contact/', contact, name='contact'),
+
+    path('profile/change-password/', auth_views.PasswordChangeView.as_view(
+        template_name='store/change_password.html',
+        success_url='/profile/'
+    ), name='change_password'),
 ]
