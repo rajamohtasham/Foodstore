@@ -125,6 +125,8 @@ def checkout(request):
     total_price = sum(item.product.price * item.quantity for item in cart_items)
 
     if request.method == 'POST':
+        payment_screenshot = request.FILES.get('payment_screenshot')  # ✅ get uploaded file
+
         order = Order.objects.create(
             user=request.user,
             name=request.POST.get('full_name'),
@@ -133,7 +135,8 @@ def checkout(request):
             phone=request.POST.get('phone'),
             total_price=total_price,
             payment_method=request.POST.get('payment_method'),
-            transaction_id=request.POST.get('transaction_id', '')
+            transaction_id=request.POST.get('transaction_id', ''),
+            payment_screenshot=payment_screenshot  # ✅ save it
         )
 
         for item in cart_items:
@@ -151,6 +154,7 @@ def checkout(request):
         'cart_items': cart_items,
         'total_price': total_price
     })
+
 
 # ✅ Order History (with filtering)
 @login_required

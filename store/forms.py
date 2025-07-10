@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Order
 
 class UserProfileForm(forms.ModelForm):
     username = forms.CharField(max_length=150, required=True, label="Username")  # ✅ added username field
@@ -29,3 +29,8 @@ class UserProfileForm(forms.ModelForm):
         if commit:
             user_profile.save()
         return user_profile
+
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['transaction_id', 'payment_screenshot']

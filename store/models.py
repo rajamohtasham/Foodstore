@@ -63,6 +63,7 @@ class Order(models.Model):
     PAYMENT_METHODS = [
         ('Easypaisa', 'Easypaisa'),
         ('JazzCash', 'JazzCash'),
+        ('Bank Transfer', 'Bank Transfer'),
     ]
     PAYMENT_STATUS = [
         ('Pending', 'Pending'),
@@ -75,17 +76,18 @@ class Order(models.Model):
         ('Dispatch', 'Dispatch'),
         ('Delivered', 'Delivered'),
     ]
-    
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15, default="Not Provided")
     address = models.TextField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='Easypaisa')
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, default='Easypaisa')
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    payment_screenshot = models.ImageField(upload_to='payment_screenshots/', blank=True, null=True)  # ✅ New field
     payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS, default='Pending')
-    order_status = models.CharField(max_length=10, choices=ORDER_STATUS, default='Received')  # ✅ New field
+    order_status = models.CharField(max_length=10, choices=ORDER_STATUS, default='Received')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
