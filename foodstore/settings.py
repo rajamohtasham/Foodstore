@@ -56,7 +56,8 @@ ROOT_URLCONF = 'foodstore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # This correctly sets the templates directory
+        # This correctly sets the templates directory
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,7 +131,6 @@ STATICFILES_DIRS = [
 ]
 
 
-
 # Static files (CSS, JS, Images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -148,3 +148,11 @@ LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = '/login/'
 
 
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'yummart01@gmail.com'
+EMAIL_HOST_PASSWORD = 'ygcw lama bnlh jkqo'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

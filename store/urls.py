@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+
 from .views import (
     home, product_detail, category_products, cart, add_to_cart, remove_from_cart, 
     checkout, order_success, order_history, register, login_view, logout_view, 

@@ -14,6 +14,11 @@
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+<style>
+    .active-link {
+        @apply text-red-500 font-semibold;
+    }
+</style>
 
 <body class="font-[Poppins,sans-serif] w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <nav class="bg-green-200 dark:bg-gray-800 text-gray-800 dark:text-white fixed w-full top-0 left-0 z-50">
@@ -30,11 +35,13 @@
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8 items-center text-[17px]">
-                    <a href="{% url 'home' %}" class="hover:text-gray-400 transition">Home</a>
-
+                    <a href="{% url 'home' %}"
+                        class="flex items-center gap-2 text-lg {% if request.resolver_match.url_name == 'home' %}text-red-500{% else %}hover:text-green-600{% endif %} transition">
+                        Home
+                    </a>
                     <!-- Categories Dropdown -->
                     <div class="relative group">
-                        <a href="{% url 'categories' %}" class="hover:text-gray-400 transition font-medium">
+                        <a href="{% url 'categories' %}" class="transition font-medium">
                             Categories
                             <i class="ri-arrow-down-s-line ml-1"></i>
                         </a>
@@ -52,14 +59,14 @@
                             </ul>
                         </div>
                     </div>
-                    <a href="{% url 'order_history' %}" class="hover:text-gray-400 transition">Order History</a>
-                    <a href="{% url 'contact' %}" class="hover:text-gray-400 transition">Contact Us</a>
+                    <a href="{% url 'order_history' %}" class="transition">Order History</a>
+                    <a href="{% url 'contact' %}" class="transition">Contact Us</a>
                 </div>
 
                 <!-- Profile + Cart + Dark Mode -->
                 <div class="hidden md:flex items-center space-x-5">
                     <!-- Dark Mode Toggle -->
-                    <button id="dark-toggle" class="text-2xl hover:text-black dark:hover:text-white transition">
+                    <button id="dark-toggle" class="text-xl hover:text-black dark:hover:text-white transition">
                         <i class="ri-moon-line"></i>
                     </button>
 
@@ -111,42 +118,51 @@
             class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden transition-opacity duration-300"></div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu"
-            class="fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-6 space-y-5 border-l z-50 transform translate-x-full transition-transform duration-300 md:hidden">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-xl font-bold text-green-600 dark:text-green-400">Menu</span>
-                <button id="close-menu" class="text-2xl text-gray-500 hover:text-red-500">&times;</button>
-            </div>
-            <a href="{% url 'home' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition">
-                <i class="ri-home-4-line"></i> Home</a>
+     <div id="mobile-menu"
+  class="fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-6 space-y-5 border-l z-50 transform translate-x-full transition-transform duration-300 md:hidden overflow-y-auto max-h-screen">
 
-            <div>
-                <span class="block font-medium mb-1">📂 Categories</span>
-                <div class="ml-3 space-y-1">
-                    {% for category in categories %}
-                    <a href="{% url 'category_products' category.slug %}"
-                        class="block hover:text-green-600 transition">• {{ category.name }}</a>
-                    {% endfor %}
-                </div>
-            </div>
-            <a href="{% url 'order_history' %}"
-                class="flex items-center gap-2 text-lg hover:text-green-600 transition"><i
-                    class="ri-file-list-3-line"></i> Order History</a>
-            <a href="{% url 'cart' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition"><i
-                    class="ri-shopping-cart-2-line"></i> Cart</a>
-            <a href="{% url 'view_profile' %}"
-                class="flex items-center gap-2 text-lg hover:text-green-600 transition"><i class="ri-user-3-line"></i>
-                Profile</a>
-            {% if request.user.is_authenticated %}
-            <a href="{% url 'logout' %}"
-                class="flex items-center gap-2 text-lg text-red-500 hover:text-red-700 transition"><i
-                    class="ri-logout-box-line"></i> Logout</a>
-            {% else %}
-            <a href="{% url 'login' %}"
-                class="flex items-center gap-2 text-lg text-green-600 hover:text-green-800 transition"><i
-                    class="ri-login-box-line"></i> Login</a>
-            {% endif %}
-        </div>
+  <div class="flex justify-between items-center mb-6">
+    <span class="text-xl font-bold text-green-600 dark:text-green-400">Menu</span>
+    <button id="close-menu" class="text-2xl text-gray-500 hover:text-red-500">&times;</button>
+  </div>
+
+  <a href="{% url 'home' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition">
+    <i class="ri-home-4-line"></i> Home
+  </a>
+
+  <div>
+    <span class="block font-medium mb-1">📂 Categories</span>
+    <div class="ml-3 space-y-1">
+      {% for category in categories %}
+        <a href="{% url 'category_products' category.slug %}"
+           class="block hover:text-green-600 transition">• {{ category.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <a href="{% url 'order_history' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition">
+    <i class="ri-file-list-3-line"></i> Order History
+  </a>
+
+  <a href="{% url 'cart' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition">
+    <i class="ri-shopping-cart-2-line"></i> Cart
+  </a>
+
+  <a href="{% url 'view_profile' %}" class="flex items-center gap-2 text-lg hover:text-green-600 transition">
+    <i class="ri-user-3-line"></i> Profile
+  </a>
+
+  {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="flex items-center gap-2 text-lg text-red-500 hover:text-red-700 transition">
+      <i class="ri-logout-box-line"></i> Logout
+    </a>
+  {% else %}
+    <a href="{% url 'login' %}" class="flex items-center gap-2 text-lg text-green-600 hover:text-green-800 transition">
+      <i class="ri-login-box-line"></i> Login
+    </a>
+  {% endif %}
+</div>
+
     </nav>
 
     <!-- Content Block -->
@@ -154,7 +170,7 @@
         {% block content %}{% endblock %}
     </div>
 
- 
+
     <!-- Scripts -->
     <script>
         const menuBtn = document.getElementById("menu-btn");
@@ -180,10 +196,12 @@
         toggleBtn.addEventListener("click", () => {
             document.documentElement.classList.toggle("dark");
             localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+            toggleBtn.innerHTML = document.documentElement.classList.contains("dark") ? '<i class="ri-sun-line"></i>' : '<i class="ri-moon-line"></i>';
         });
 
         // Load Theme Preference
         if (localStorage.getItem("theme") === "dark") {
+            
             document.documentElement.classList.add("dark");
         }
     </script>

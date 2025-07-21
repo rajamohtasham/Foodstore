@@ -3,66 +3,69 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<div class="flex justify-center items-center">
+<div class="flex justify-center items-center min-h-screen  px-4">
     <form method="POST" action="{% url 'checkout' %}" enctype="multipart/form-data"
-        class="bg-white max-w-md w-full p-6 rounded-lg shadow-md relative">
-        <span class="absolute right-0 top-0 p-3">
-            <a href="{% url 'home' %}" class="text-gray-500 hover:text-gray-700">
+        class="bg-white dark:bg-gray-800 max-w-md w-full p-6 rounded-2xl shadow-2xl relative border border-gray-200 dark:border-gray-700 transition">
+        <!-- Close Button -->
+        <span class="absolute right-3 top-3">
+            <a href="{% url 'home' %}" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white transition">
                 <i class='bx bx-x text-2xl'></i>
             </a>
         </span>
+
         {% csrf_token %}
         {% if error %}
-        <p class="text-red-500">{{ error }}</p>
+        <p class="text-red-500 text-sm mb-4">{{ error }}</p>
         {% endif %}
-        <h2 class="text-3xl font-bold text-gray-700 mb-6 text-center">Checkout</h2>
 
-        <div class="flex justify-between gap-2">
-            <div class="mb-4">
-                <label class="block text-gray-700">Full Name</label>
-                <input type="text" name="full_name" class="w-full p-2 border rounded-md" required>
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-3 text-center">Checkout</h2>
+
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 mb-1">Full Name</label>
+                <input type="text" name="full_name" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Email</label>
-                <input type="email" name="email" class="w-full p-2 border rounded-md" required>
+            <div class="flex-1 mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 mb-1">Email</label>
+                <input type="email" name="email" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required>
             </div>
         </div>
 
-        <div class="flex justify-between gap-2">
-            <div class="mb-4">
-                <label class="block text-gray-700">Address</label>
-                <textarea name="address" class="w-full p-2 border rounded-md h-10 scroll-none" required></textarea>
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 mb-1">Address</label>
+                <textarea name="address" class="w-full !h-11 p-2 border rounded-md h-20 dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required></textarea>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Phone Number</label>
-                <input type="text" name="phone" class="w-full p-2 border rounded-md" required>
+            <div class="flex-1 mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 mb-1">Phone Number</label>
+                <input type="text" name="phone" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" required>
             </div>
         </div>
 
-        <div class="flex justify-between gap-2">
-            <div class="mb-4 w-[50%]">
-                <select name="payment_method" class="w-full p-2 border rounded-md">
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 mb-1">Payment Method</label>
+                <select name="payment_method" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600">
                     <option value="Easypaisa">Easypaisa</option>
                     <option value="JazzCash">JazzCash</option>
                     <option value="Bank Transfer">Bank Transfer</option>
                 </select>
             </div>
-            <div class="mb-4 w-[50%]">
-                <input type="text" name="transaction_id" class="w-full p-2 border rounded-md"
-                    placeholder="Enter Transaction ID">
+            <div class="flex-1 mb-4">
+                <label class="block text-gray-700 dark:text-gray-200 mb-1">Transaction ID</label>
+                <input type="text" name="transaction_id" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter Transaction ID">
             </div>
         </div>
 
-        <!-- ✅ New Screenshot Upload -->
         <div class="mb-4">
-            <label class="block text-gray-700">Upload Payment Screenshot (optional)</label>
-            <input type="file" name="payment_screenshot" accept="image/*" class="w-full p-2 border rounded-md">
+            <label class="block text-gray-700 dark:text-gray-200 mb-1">Upload Payment Screenshot (optional)</label>
+            <input type="file" name="payment_screenshot" accept="image/*" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 file:cursor-pointer">
         </div>
 
-        <h3 class="text-xl font-bold text-gray-700 mt-4 text-center">Total: Rs {{ total_price }} </h3>
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mt-2 text-center">Total: Rs {{ total_price }}</h3>
 
         <button type="submit"
-            class="block w-full text-center bg-green-500 text-white py-2 mt-4 rounded-md hover:bg-green-600 transition">
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md mt-2 transition duration-300">
             Place Order
         </button>
     </form>

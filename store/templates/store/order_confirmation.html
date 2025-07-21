@@ -3,20 +3,39 @@
 {% block title %}Order Confirmation{% endblock %}
 
 {% block content %}
-<h2 class="text-3xl font-bold text-green-600 mb-4">Thank You for Your Order!</h2>
-<div class="bg-white p-6 rounded-lg shadow-md">
-    <p class="text-lg font-bold">Order ID: {{ order.id }}</p>
-    <p class="text-gray-700"><strong>Name:</strong> {{ order.name }}</p>
-    <p class="text-gray-700"><strong>Email:</strong> {{ order.email }}</p>
-    <p class="text-gray-700"><strong>Address:</strong> {{ order.address }}</p>
-    <p class="text-gray-700"><strong>Phone:</strong> {{ order.phone }}</p>
-    <h3 class="text-xl font-bold mt-4">Total Price: Rs {{ order.total_price }}</h3>
-    <p class="text-gray-700"><strong>Payment Method:</strong> {{ order.payment_method }}</p>
-    <p class="text-gray-700"><strong>Transaction ID:</strong> {{ order.transaction_id|default:"Not Provided" }}</p>
-    <p class="text-gray-700"><strong>Payment Status:</strong> {{ order.payment_status }}</p>
-    <p class="mt-4 text-gray-600">Your order is being processed. You will receive a confirmation once the payment is verified.</p>
-</div>
-<div class="mt-6">
-    <a href="{% url 'home' %}" class="bg-green-500 text-white py-2 px-4 rounded-md">Back to Home</a>
+<div class=" flex flex-col justify-center items-center px-4  dark:bg-gray-900 py-10">
+    <h2 class="text-3xl md:text-3xl font-bold text-green-600 dark:text-green-400 mb-6 text-center">
+        Thank You for Your Order!
+    </h2>
+
+    <div class="bg-white dark:bg-gray-800 w-full max-w-xl p-6 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition">
+        <p class="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+            <span class="text-green-500 dark:text-green-400">Order ID:</span> {{ order.id }}
+        </p>
+
+        <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+            <li><strong>Name:</strong> {{ order.name }}</li>
+            <li><strong>Email:</strong> {{ order.email }}</li>
+            <li><strong>Address:</strong> {{ order.address }}</li>
+            <li><strong>Phone:</strong> {{ order.phone }}</li>
+            <li><strong>Payment Method:</strong> {{ order.payment_method }}</li>
+            <li><strong>Transaction ID:</strong> {{ order.transaction_id|default:"Not Provided" }}</li>
+            <li><strong>Payment Status:</strong> {{ order.payment_status }}</li>
+        </ul>
+
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mt-6">
+            Total Price: Rs {{ order.total_price }}
+        </h3>
+
+        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+            Your order is being processed. You will receive a confirmation once the payment is verified.
+        </p>
+    </div>
+
+    <div class="mt-6">
+        <a href="{% url 'home' %}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow-md transition">
+            Back to Home
+        </a>
+    </div>
 </div>
 {% endblock %}
